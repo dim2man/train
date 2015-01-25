@@ -1,0 +1,7 @@
+{
+  "name": "train",
+  "private": true,
+  "dependencies": {
+    "jquery": "~1.x"
+  }
+}
