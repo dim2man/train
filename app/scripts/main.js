@@ -12,20 +12,22 @@ $(function() {
     },
     bindPadding = 20,
     $target,
-    wagonsPlaced/*,
-    audio*/;
+    wagonsPlaced,
+    audio,
+    AUDIO_CLICK = 'sound/receive.wav',
+    AUDIO_GO = 'sound/train.wav';
 
-  // if (Audio) {
-  //   audio = new Audio();
-  // }
+  if (Audio) {
+    audio = new Audio();
+  }
 
-  // function play(sound) {
-  //   if (!audio) {
-  //     return;
-  //   }
-  //   audio.src = sound;
-  //   audio.play();
-  // }
+  function play(sound) {
+    if (!audio) {
+      return;
+    }
+    audio.src = sound;
+    audio.play();
+  }
 
   function enableDrag($img, ondragged) {
     var curDragImg;
@@ -111,9 +113,12 @@ $(function() {
         }
         $('.wagon').off('click');
         var path = pos.left + $img.width();
+        play(AUDIO_GO);
         $('.train').add('.freeze').animate({
           left: '-='+path
         }, path*3.3 /*~300px per sec*/, init);
+      } else {
+        play(AUDIO_CLICK);
       }
     }
   }
