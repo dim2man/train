@@ -12,20 +12,20 @@ $(function() {
     },
     bindPadding = 20,
     $target,
-    wagonsPlaced,
-    audio;
+    wagonsPlaced/*,
+    audio*/;
 
-  if (Audio) {
-    audio = new Audio();
-  }
+  // if (Audio) {
+  //   audio = new Audio();
+  // }
 
-  function play(sound) {
-    if (!audio) {
-      return;
-    }
-    audio.src = sound;
-    audio.play();
-  }
+  // function play(sound) {
+  //   if (!audio) {
+  //     return;
+  //   }
+  //   audio.src = sound;
+  //   audio.play();
+  // }
 
   function enableDrag($img, ondragged) {
     var curDragImg;
@@ -68,12 +68,12 @@ $(function() {
   function targetMatch($img) {
     var imgPos = $img.position(),
       targetPos = $target.position(),
-      imgWidth = $img.width(),
+      // imgWidth = $img.width(),
       imgHeigh = $img.height(),
       targetWidth = $target.width(),
       targetHeight = $target.height(),
       il = imgPos.left + bindPadding,
-      ir = il +imgWidth - bindPadding,
+      // ir = il +imgWidth - bindPadding,
       it = imgPos.top + bindPadding,
       ib = it + imgHeigh - bindPadding,
       tl = targetPos.left + bindPadding,
@@ -81,8 +81,7 @@ $(function() {
       tt = targetPos.top + bindPadding,
       tb = tt + targetHeight - bindPadding;
 
-    if ( ( (tr - bindPadding <= il && il <= tr + bindPadding) )
-       &&( (tt <= it && it <= tb) || (tt <= ib && ib <= tb) ) ) {
+    if ( (tr - bindPadding <= il && il <= tr + bindPadding) && ( (tt <= it && it <= tb) || (tt <= ib && ib <= tb) ) ) {
       return true;
     } else {
       return false;
@@ -123,9 +122,9 @@ $(function() {
     wagonsPlaced = 0;
     
     $('.train')
-    .attr('src', 'images/tr'+stage+'.png')
+    .removeClass('tr1 tr2 tr3 tr4 tr5')
+    .addClass('tr'+stage)
     .css({
-      visibility: 'visible',
       left: 'calc(50% - '+(150+150*stage)/2+'px)'
     });
     

@@ -9,7 +9,27 @@
   height: 120px;
   top: calc(40% - 60px);
   left: calc(50% - 75px);
-  visibility: hidden;
+  background-size: 100%; 
+}
+
+.tr1 {
+  background-image: url('../images/tr1.png');
+}
+
+.tr2 {
+  background-image: url('../images/tr2.png');
+}
+
+.tr3 {
+  background-image: url('../images/tr3.png');
+}
+
+.tr4 {
+  background-image: url('../images/tr4.png');
+}
+
+.tr5 {
+  background-image: url('../images/tr5.png');
 }
 
 .wagon {
