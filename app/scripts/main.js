@@ -30,6 +30,7 @@ $(function() {
   function enableDrag($img, ondragged) {
     var curDragImg;
     function freeze() {
+      curDragImg = null;
       $img.removeClass('active');
       $win.off('mousemove');
       $win.off('click');
