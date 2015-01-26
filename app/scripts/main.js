@@ -15,6 +15,7 @@ $(function() {
     wagonsPlaced,
     audio,
     AUDIO_CLICK = 'sound/receive.wav',
+    AUDIO_YOUCANNOT = 'sound/youcannot.wav',
     AUDIO_GO = 'sound/train.wav';
 
   if (Audio) {
@@ -29,8 +30,8 @@ $(function() {
     audio.play();
   }
 
-  function enableDrag($img, ondragged) {
-    var curDragImg;
+  function enableDrag($img) {
+    var curDragImg, freezed;
     function freeze() {
       curDragImg = null;
       $img.removeClass('active');
@@ -43,6 +44,20 @@ $(function() {
       var prevX, prevY;
       if ($img === curDragImg) {
         return;
+      }
+      if ($img.hasClass('freeze')) {
+        freezed = true;
+        wagonsPlaced.pop();
+        if (wagonsPlaced.length > 0) {
+          $target = wagonsPlaced[wagonsPlaced.length - 1];
+          enableDrag(wagonsPlaced[wagonsPlaced.length - 1]);
+          $target.addClass('last');
+        } else {
+          $target = $('.train');          
+        }
+        $img.removeClass('freeze');
+      } else {
+        freezed = false;
       }
       prevX = e.pageX;
       prevY = e.pageY;
@@ -60,9 +75,14 @@ $(function() {
         prevX = e.pageX;
         prevY = e.pageY;
 
-        ondragged($img, freeze);
+        if (!freezed) {
+          dragged($img, freeze);
+        }
       }); 
       $win.on('click', function() {
+        if (freezed) {
+          dragged($img, freeze);
+        }
         freeze();
       });
     });
@@ -94,9 +114,15 @@ $(function() {
   function dragged($img, freeze) {
     if (targetMatch($img)) {
       freeze();
-      var bind = wagonsPlaced > 0 ? bindWagon : bindTrain;
-      wagonsPlaced++;
-      $img.addClass('freeze').off('click');
+      var bind;
+      if (wagonsPlaced.length > 0) {
+        bind = bindWagon;
+        wagonsPlaced[wagonsPlaced.length - 1].off('click').removeClass('last');
+      } else {
+        bind = bindTrain;
+      }
+      wagonsPlaced.push($img);
+      $img.addClass('freeze last');
       var pos = $target.position();
       pos.top += bind.top;
       pos.left += bind.left;
@@ -105,31 +131,17 @@ $(function() {
         left: pos.left
       });
       $target = $img;
-      if (wagonsPlaced >= stage) {
-        // stage completed
-        stage++;
-        if (stage > 5) {
-          stage = 1;
-        }
-        $('.wagon').off('click');
-        var path = pos.left + $img.width();
-        play(AUDIO_GO);
-        $('.train').add('.freeze').animate({
-          left: '-='+path
-        }, path*3.3 /*~300px per sec*/, init);
-      } else {
-        play(AUDIO_CLICK);
-      }
+      play(AUDIO_CLICK);
     }
   }
 
   function init() {
     $target = $('.train');
-    wagonsPlaced = 0;
+    wagonsPlaced = [];
     
     $('.train')
     .removeClass('tr1 tr2 tr3 tr4 tr5')
-    .addClass('tr'+stage)
+    .addClass('clickable tr'+stage)
     .css({
       left: 'calc(50% - '+(150+150*stage)/2+'px)'
     });
@@ -142,10 +154,36 @@ $(function() {
     .removeClass('freeze')
     .removeClass('active')
     .each(function(){
-      enableDrag($(this), dragged);  
+      enableDrag($(this));  
     });
   }
-  init();
 
+  $('.train').on('click', function() {
+    if (!$('.train').hasClass('clickable')) return;
+    if (wagonsPlaced.length === stage) {
+      // stage completed
+      stage++;
+      if (stage > 5) {
+        stage = 1;
+      }
+      $('.wagon').off('click');
+      var path = $target.position().left + $target.width();
+      play(AUDIO_GO);
+      $('.train')
+      .removeClass('clickable')
+      .add('.freeze')
+      .animate({
+        left: '-='+path
+      }, path*3.3 /*~300px per sec*/, init);
+    } else {
+      play(AUDIO_YOUCANNOT);
+    }
+  });
+
+  $('#btnstart').on('click', function() {
+    $('.banner').hide();
+    $('.wagon').addClass('visible');
+    init();
+  });
 
 });

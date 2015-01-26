@@ -3,6 +3,41 @@
   padding: 0;
 }
 
+.banner {
+  position: fixed;
+  top: 0;
+  left: 20%;
+  height: 100%;
+  background-color: white;
+  width: 50%;
+  z-index: 2;
+  padding: 5%;
+  font-family: arial, sans-serif;
+}
+
+.banner h2 {
+  display: block;
+  margin: 0 0 2%;
+  text-align: center;
+}
+
+.banner img {
+  height: 150px;
+  display: block;
+  margin: auto;
+}
+
+.banner h3 {
+  margin: 0.5em 0;
+  font-style: italic;
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+.banner ol {
+  padding-left: 30px;
+}
+
 .train {
   position: fixed;
   width: 150px;
@@ -10,6 +45,10 @@
   top: calc(40% - 60px);
   left: calc(50% - 75px);
   background-size: 100%; 
+}
+
+.train.clickable {
+  cursor: pointer;
 }
 
 .tr1 {
@@ -40,6 +79,11 @@
   cursor: pointer;
   border: solid 0 #fff;
   border-radius: 10px;
+  visibility: hidden;
+}
+
+.wagon.visible {
+  visibility: visible;
 }
 
 .wagon1 {
@@ -68,6 +112,17 @@
 
 .freeze {
   cursor: default;
+}
+
+.freeze.last {
+  cursor: pointer;
+}
+
+button {
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+  margin: 2% auto 0;
 }
 
 /* Responsive: Portrait tablets and up */
