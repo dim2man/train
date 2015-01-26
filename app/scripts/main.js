@@ -159,7 +159,9 @@ $(function() {
   }
 
   $('.train').on('click', function() {
-    if (!$('.train').hasClass('clickable')) return;
+    if (!$('.train').hasClass('clickable')) {
+      return;
+    }
     if (wagonsPlaced.length === stage) {
       // stage completed
       stage++;
