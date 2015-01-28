@@ -136,6 +136,7 @@ $(function() {
   }
 
   function init() {
+    $('.final').hide();
     $target = $('.train');
     wagonsPlaced = [];
     
@@ -176,16 +177,66 @@ $(function() {
       .add('.freeze')
       .animate({
         left: '-='+path
-      }, path*3.3 /*~300px per sec*/, init);
+      }, path*3.3 /*~300px per sec*/, function() {
+        if (stage === 1) {
+          fin();
+        } else {
+          init();
+        }
+      });
     } else {
       play(AUDIO_YOUCANNOT);
     }
   });
 
-  $('#btnstart').on('click', function() {
+  function hideBanner() {
     $('.banner').hide();
     $('.wagon').addClass('visible');
     init();
-  });
+  }
 
+  function fin() {
+    var $fin = $('.final');
+    if($fin.data('active')) {
+      return;
+    }
+    $fin.data('active', true);
+    var $sets = $('.final > div');
+    $sets = $sets.css('padding-left', '100%').detach();
+    console.log($sets.length);
+    $('#btnagain').css('visibility', 'hidden');
+    // shake
+    var i, setIndexes = [0,1,2,3,4], i1, i2, tmp;
+    for(i=0; i<50; i++) {
+      i1 = Math.floor(Math.random()*setIndexes.length);
+      i2 = Math.floor(Math.random()*setIndexes.length);
+      tmp = setIndexes[i2];
+      setIndexes[i2] = setIndexes[i1];
+      setIndexes[i1] = tmp;
+    }
+    for(i=0; i<5; i++) {
+      $fin.append($sets[setIndexes[i]]);
+    }
+    $fin.show();
+    finAnimate($('.final > div').first());
+  }
+
+  function finAnimate($el) {
+    play(AUDIO_GO);
+    $el.animate({
+      'padding-left': '1%'
+    }, $win.width()*3.3 /*~300px per sec*/, function() {
+      var $next = $el.next('div');
+      if($next.length > 0) {
+        finAnimate($next);
+      } else {
+        $('.final').data('active', false);
+        $('#btnagain').css('visibility', 'visible');
+      }
+    });
+  }
+
+  $('#btnstart').on('click', hideBanner);
+
+  $('#btnagain').on('click', init);
 });
