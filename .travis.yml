@@ -8,7 +8,7 @@ script: grunt
 after_success: grunt gh-pages:travis
 env:
   global:
-  - secure: Wjz736SETcAJS/j+ASteF93FWc2MZ0/3BtbA6go3C0OdXyRXf3548Gl1iNybUvnoYeFvekzNmQ82I7xEEj4R0i/nBRRhgnlDUIuo7j875EIp+FX0O6jsjpkg67tju11XAfISluQFK0fqgJeQ705tz2rr3nSK7HM1Xr9PA/+b+28=
+    secure: O2Vr3gO5cdMpL2TEiV41ziOCTgxdG5QhFl1jDEmeEN+9ana04uVJVlkT7wFegxdFUkAcln8HPiwi9t3G/aQXiruxcaj1JKjE0TAI9kbYuiTJsz6hG09wbueNn+SubqjvsYDsatvNHkJKnUO0tAvuoBWGT4xAPucekDo+gOIEdYs=
 branches:
   only:
-    - master
+  - master
